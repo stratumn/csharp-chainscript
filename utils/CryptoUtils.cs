@@ -73,7 +73,7 @@ namespace Utils
                 .Replace("-----END ED25519 PRIVATE KEY-----", "");
 
             var privateKeyBase64 = Convert.FromBase64String(pem);
-            byte[] seed = privateKeyBase64.Skip(17).Take(32).ToArray();  //CopyOfRange(privateKeyBase64, 18, 50);
+            byte[] seed = privateKeyBase64.Skip(17).Take(32).ToArray();   
 
             var keyParameters = new Ed25519PrivateKeyParameters(seed, 0);
             return (Ed25519PrivateKeyParameters)keyParameters;
@@ -148,21 +148,7 @@ namespace Utils
             return signer.VerifySignature(sig);
 
         }
-        /// <summary>
-        /// Copy range of array from start index to end index
-        /// </summary>
-        /// <param name="src"></param>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        /// <returns></returns>
-        public static byte[] CopyOfRange1(byte[] src, int start, int end)
-        {
-            int len = end - start;
-            byte[] dest = new byte[len];
-            Array.Copy(src, start, dest, 0, len);
-            return dest;
-        }
-
+   
 
 
         /// <summary>
