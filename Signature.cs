@@ -126,7 +126,7 @@ namespace Stratumn.Chainscript
                 signedMessage = CryptoUtils.Sign(privateKey, toSign);
                 publicKey = CryptoUtils.GetPublicKeyFromPrivateKey(privateKey);
             }
-            catch (Exception e) //when (e is InvalidKeyException || e is NoSuchAlgorithmException || e is SignatureException || e is InvalidKeySpecException)
+            catch (Exception e) 
             {
                 throw new ChainscriptException("Could not create the private key / signature", e);
             }
