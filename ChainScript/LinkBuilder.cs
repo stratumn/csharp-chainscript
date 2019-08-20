@@ -156,11 +156,11 @@ namespace Stratumn.Chainscript
 
             if (this.linkData != null)
             {
-                link.Data = this.linkData;
+                link.SetData(this.linkData);
             }
             if (this.linkMetadata != null)
             {
-                link.Metadata = this.linkMetadata;
+                link.SetMetadata (this.linkMetadata);
             }
 
             return link;

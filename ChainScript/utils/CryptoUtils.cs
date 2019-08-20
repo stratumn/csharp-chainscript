@@ -4,6 +4,7 @@ using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Encodings;
 using Org.BouncyCastle.Crypto.Engines;
+using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
@@ -71,7 +72,7 @@ namespace Utils
         {
             pem = pem.Replace("\n", "").Replace("-----BEGIN ED25519 PRIVATE KEY-----", "")
                 .Replace("-----END ED25519 PRIVATE KEY-----", "");
-
+              
             var privateKeyBase64 = Convert.FromBase64String(pem);
             byte[] seed = privateKeyBase64.Skip(17).Take(32).ToArray();   
 
@@ -109,6 +110,20 @@ namespace Utils
         }
 
         /// <summary>
+        /// Generates a KeyPair 
+        /// </summary>
+        /// <returns></returns>
+        public static AsymmetricCipherKeyPair GeneratePrivateKey()
+        { 
+            Ed25519KeyPairGenerator d = new Ed25519KeyPairGenerator();
+            d.Init(new Ed25519KeyGenerationParameters(SecureRandom.GetInstance(Ed25519)));
+
+            AsymmetricCipherKeyPair keyPair = d.GenerateKeyPair();
+            return keyPair;
+        }
+
+         
+        /// <summary>
         /// Todo :Need to be enhanced to return the correct public key but not used for now
         /// </summary>
         /// <param name="pem"></param>
@@ -123,7 +138,7 @@ namespace Utils
             // convert it to X509
             var keyPair = new AsymmetricCipherKeyPair(ed25519PublicKeyParam, privateKey);
             var publicKeyInfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(keyPair.Public);
-
+          
             var serializedPublicBytes = publicKeyInfo.GetEncoded();
             var base64 = Convert.ToBase64String(serializedPublicBytes);
             base64 = string.Format("-----BEGIN ED25519 PUBLIC KEY-----\n{0}\n-----END ED25519 PUBLIC KEY-----", base64);

@@ -84,13 +84,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CanonicalJson\CanonicalJson.csproj">
+    <Folder Include="packages\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\canonicaljson-csharp\CanonicalJson\CanonicalJson.csproj">
       <Project>{f2ec8a3f-a4ef-4675-985d-8da3ef0d141b}</Project>
       <Name>CanonicalJson</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="packages\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\Google.Protobuf.Tools.3.9.1\build\Google.Protobuf.Tools.targets" Condition="Exists('packages\Google.Protobuf.Tools.3.9.1\build\Google.Protobuf.Tools.targets')" />

@@ -18,7 +18,7 @@ namespace Stratumn.Chainscript
 
         public Segment(Stratumn.Chainscript.Proto.Segment pbSegment)
         {
-            if (pbSegment.Link != null)
+            if (pbSegment.Link == null)
             {
                 throw new ChainscriptException(Error.LinkMissing);
             }

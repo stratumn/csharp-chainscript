@@ -26,14 +26,14 @@ namespace Stratumn.Chainscript
         {
             this.link = link;
         }
-  
+
         /// <summary>
         /// A link is usually created as a result of an action. </summary>
         /// <exception cref="Exception"> 
         /// @returns the link's action. </exception>
         public string Action()
-        { 
-            return this.LinkMeta.Action ?? "" ;
+        {
+            return this.LinkMeta.Action ?? "";
         }
 
         /// <summary>
@@ -68,54 +68,55 @@ namespace Stratumn.Chainscript
         }
 
         /// <summary>
-        /// Set the given object as the link's data. </summary>
-        /// <param name="data"> custom data to save with the link. </param>
-        /// <exception cref="ChainscriptException"> </exception>
-        /// <exception cref="Exception">  </exception>
-        public object Data
+        /// gets the Data
+        /// </summary>
+        /// <returns></returns>
+        public object Data()
         {
             /// <summary>
             /// The link data (business logic details about the execution of a process step). </summary>
             /// <exception cref="Exception"> 
             /// @returns the object containing the link details. </exception>
-            get
-            {
-                this.VerifyCompatibility();
 
-                if (this.link.Data == null || this.link.Data.IsEmpty)
-                {
-                    return null;
-                }
-                switch (this.Version())
-                {
-                    case Constants.LINK_VERSION_1_0_0:
-                        return Canonicalizer.Parse(this.link.Data.ToStringUtf8());
-                    default:
-                        throw new ChainscriptException(Error.LinkVersionUnknown);
-                }
-            }
-            set
-            {
-                this.VerifyCompatibility();
+            this.VerifyCompatibility();
 
-                switch (this.Version())
-                {
-                    case Constants.LINK_VERSION_1_0_0:
-                        try
-                        {
-                            string canonicalData = Canonicalizer.Stringify(value);
-                            this.link.Data = ByteString.CopyFrom(Encoding.UTF8.GetBytes(canonicalData));
-                            return;
-                        }
-                        catch (Exception e)
-                        {
-                            throw new ChainscriptException(e);
-                        }
-                    default:
-                        throw new ChainscriptException(Error.LinkVersionUnknown);
-                }
+            if (this.link.Data == null || this.link.Data.IsEmpty)
+            {
+                return null;
             }
-            
+            switch (this.Version())
+            {
+                case Constants.LINK_VERSION_1_0_0:
+                    return Canonicalizer.Parse(this.link.Data.ToStringUtf8());
+                default:
+                    throw new ChainscriptException(Error.LinkVersionUnknown);
+            }
+        }
+
+        /// <summary>
+        ///  Set the given object as the link's data. 
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetData(object value)
+        {
+            this.VerifyCompatibility();
+
+            switch (this.Version())
+            {
+                case Constants.LINK_VERSION_1_0_0:
+                    try
+                    {
+                        string canonicalData = Canonicalizer.Stringify(value);
+                        this.link.Data = ByteString.CopyFrom(Encoding.UTF8.GetBytes(canonicalData));
+                        return;
+                    }
+                    catch (Exception e)
+                    {
+                        throw new ChainscriptException(e);
+                    }
+                default:
+                    throw new ChainscriptException(Error.LinkVersionUnknown);
+            } 
         }
 
         /// <summary>
@@ -142,8 +143,10 @@ namespace Stratumn.Chainscript
         /// @returns the link's map id. </exception>
         public string MapId()
         {
+
             Proto.LinkMeta meta = LinkMeta;
             return string.IsNullOrEmpty(meta.MapId) ? "" : meta.MapId;
+
         }
 
 
@@ -152,56 +155,57 @@ namespace Stratumn.Chainscript
         /// <param name="data"> custom data to save with the link metadata. </param>
         /// <exception cref="ChainscriptException"> </exception>
         /// <exception cref="Exception">  </exception> 
-        public object Metadata
+        /// 
+        public object Metadata()
         {
-            get
+
+            this.VerifyCompatibility();
+            object result = null;
+            ByteString linkMetadata = LinkMeta.Data;
+            if (linkMetadata == null || linkMetadata.IsEmpty)
             {
-                this.VerifyCompatibility();
-                object result = null;
-                ByteString linkMetadata = LinkMeta.Data;
-                if (linkMetadata == null || linkMetadata.IsEmpty)
-                {
-                    return result;
-                }
-                switch (this.Version())
-                {
-                    case Constants.LINK_VERSION_1_0_0:
-                        return Canonicalizer.Parse(linkMetadata.ToStringUtf8());
-
-                    default:
-                        throw new ChainscriptException(Error.LinkVersionUnknown);
-                }
+                return result;
             }
-            set
+            switch (this.Version())
             {
-                this.VerifyCompatibility();
+                case Constants.LINK_VERSION_1_0_0:
+                    return Canonicalizer.Parse(linkMetadata.ToStringUtf8());
 
-                switch (this.Version())
-                {
-                    case Constants.LINK_VERSION_1_0_0:
-                        try
-                        {
-                            string canonicalData = Canonicalizer.Stringify(value);
-                            LinkMeta.Data = ByteString.CopyFrom(Encoding.UTF8.GetBytes(canonicalData));
-
-                            Proto.LinkMeta meta = LinkMeta;
-                            this.link.Meta = meta;
-                            return;
-                        }
-                        catch (Exception e)
-                        {
-                            throw new ChainscriptException(e);
-                        }
-                    default:
-                        throw new ChainscriptException(Error.LinkVersionUnknown);
-                }
+                default:
+                    throw new ChainscriptException(Error.LinkVersionUnknown);
             }
-            
         }
 
 
-        
- 
+        public void SetMetadata(object value)
+        {
+            this.VerifyCompatibility();
+
+            switch (this.Version())
+            {
+                case Constants.LINK_VERSION_1_0_0:
+                    try
+                    {
+                        string canonicalData = Canonicalizer.Stringify(value);
+                        LinkMeta.Data = ByteString.CopyFrom(Encoding.UTF8.GetBytes(canonicalData));
+
+                        Proto.LinkMeta meta = LinkMeta;
+                        this.link.Meta = meta;
+                        return;
+                    }
+                    catch (Exception e)
+                    {
+                        throw new ChainscriptException(e);
+                    }
+                default:
+                    throw new ChainscriptException(Error.LinkVersionUnknown);
+            }
+
+        }
+
+
+
+
 
         /// <summary>
         /// Maximum number of children a link is allowed to have.
@@ -247,8 +251,8 @@ namespace Stratumn.Chainscript
             {
                 throw new ChainscriptException(Error.LinkProcessMissing);
             }
-            return new Process(string.IsNullOrEmpty(process.Name) ? "" 
-                          : process.Name, string.IsNullOrEmpty(process.State) ? "" 
+            return new Process(string.IsNullOrEmpty(process.Name) ? ""
+                          : process.Name, string.IsNullOrEmpty(process.State) ? ""
                                    : process.State);
         }
 
@@ -297,9 +301,9 @@ namespace Stratumn.Chainscript
             return this.link.ToByteArray();
         }
 
-   
 
-      
+
+
         /// <summary>
         /// Sign configurable parts of the link with the current signature version.
         /// The payloadPath is used to select what parts of the link need to be signed
@@ -314,7 +318,7 @@ namespace Stratumn.Chainscript
             Signature signature = Signature.SignLink(key, this, payloadPath);
 
             Stratumn.Chainscript.Proto.Signature sig = new Stratumn.Chainscript.Proto.Signature()
-            { 
+            {
                 Version = signature.Version(),
                 PayloadPath = signature.PayloadPath(),
                 PublicKey = ByteString.CopyFrom(signature.PublicKey()),
@@ -343,7 +347,7 @@ namespace Stratumn.Chainscript
         /// @argument version impacts how those bytes are computed.
         /// @argument payloadPath parts of the link that should be signed.
         /// @returns bytes to be signed. </exception>
-       public byte[] SignedBytes(string version, string payloadPath)
+        public byte[] SignedBytes(string version, string payloadPath)
         {
             byte[] hashedResultBytes = null;
             switch (version)
@@ -361,7 +365,7 @@ namespace Stratumn.Chainscript
                         input = Google.Protobuf.JsonFormatter.ToDiagnosticString(this.link);
                         var jmes = new JmesPath();
                         string result = jmes.Transform(input, payloadPath);
-  
+
                         string canonicalResult = Canonicalizer.Canonizalize(result.ToString());
                         byte[] payloadBytes = Encoding.UTF8.GetBytes(canonicalResult);
                         hashedResultBytes = CryptoUtils.Sha256(payloadBytes);
@@ -423,7 +427,7 @@ namespace Stratumn.Chainscript
                 throw new ChainscriptException(Error.LinkProcessMissing);
             }
 
-            this.VerifyCompatibility(); 
+            this.VerifyCompatibility();
             foreach (LinkReference @ref in this.Refs())
             {
                 if (string.IsNullOrEmpty(@ref.Process))
@@ -466,7 +470,7 @@ namespace Stratumn.Chainscript
             }
 
             string[] compatibleClients = new string[] { Constants.ClientId, "github.com/stratumn/java-chainscript", "github.com/stratumn/go-chainscript", "github.com/stratumn/js-chainscript" };
-            if (compatibleClients.Contains(LinkMeta.ClientId))
+            if (!compatibleClients.Contains(LinkMeta.ClientId))
             {
                 throw new ChainscriptException(Error.LinkClientIdUnkown);
             }
