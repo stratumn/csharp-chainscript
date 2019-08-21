@@ -4,6 +4,7 @@ using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters; 
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities.IO.Pem;
+using Org.BouncyCastle.X509;
 using System;
 using System.IO;
 using System.Linq;
@@ -65,10 +66,11 @@ namespace Utils
             TextReader textReader = new StringReader(pem);
             PemReader pemReader = new PemReader(textReader);
             var pemObject = pemReader.ReadPemObject();
-            var privateKey = DecodeEd25519PrivateKey(pemObject.Content);
- 
-            return privateKey; 
+            byte[] seed = pemObject.Content.Skip(18).Take(32).ToArray();
+            var privateKey = DecodeEd25519PrivateKey(seed);
+            return privateKey;
         }
+
 
 
         /// <summary>
@@ -77,10 +79,10 @@ namespace Utils
         /// <param name="pem"></param>
         /// <returns></returns>
         public static Ed25519PrivateKeyParameters DecodeEd25519PrivateKey(byte[] keyBytes)
-        { 
-             Ed25519PrivateKeyParameters privateKey =  new Ed25519PrivateKeyParameters(keyBytes, 0);
- 
-            return privateKey; 
+        {
+            Ed25519PrivateKeyParameters privateKey = new Ed25519PrivateKeyParameters(keyBytes, 0);
+            // var privateKey = (Ed25519PrivateKeyParameters)PrivateKeyFactory.CreateKey(keyBytes); 
+            return privateKey;
         }
 
         /// <summary>
@@ -95,14 +97,18 @@ namespace Utils
             var pemObject = pemReader.ReadPemObject();
             var keyParameters = new Ed25519PublicKeyParameters(pemObject.Content, 0);
             var publicKey = DecodeEd25519PublicKey(pemObject.Content);
- 
+            //pem = pem.Replace("\n", "").Replace("-----BEGIN ED25519 PUBLIC KEY-----", "")
+            //    .Replace("-----END ED25519 PUBLIC KEY-----", "");
+
+            //var privateKeyBase64 = Convert.FromBase64String(pem); 
+            // var publicKey = DecodeEd25519PublicKey(privateKeyBase64); 
             return publicKey;
-        } 
+        }
 
         public static Ed25519PublicKeyParameters DecodeEd25519PublicKey(byte[] keyBytes)
-        { 
- 
-           Ed25519PublicKeyParameters publicKey = new Ed25519PublicKeyParameters(keyBytes, 0); 
+        {
+            var publicKey = (Ed25519PublicKeyParameters)PublicKeyFactory.CreateKey(keyBytes);
+            //Ed25519PublicKeyParameters publicKey = new Ed25519PublicKeyParameters(keyBytes, 0); 
             return publicKey;
         }
 
@@ -111,15 +117,15 @@ namespace Utils
         /// </summary>
         /// <returns></returns>
         public static AsymmetricCipherKeyPair GeneratePrivateKey()
-        { 
+        {
             Ed25519KeyPairGenerator d = new Ed25519KeyPairGenerator();
             d.Init(new Ed25519KeyGenerationParameters(SecureRandom.GetInstance(Ed25519_ALGO)));
 
             AsymmetricCipherKeyPair keyPair = d.GenerateKeyPair();
             return keyPair;
         }
-         
-         
+
+
         /// <summary>
         /// Todo :Need to be enhanced to return the correct public key but not used for now
         /// </summary>
@@ -128,14 +134,13 @@ namespace Utils
         /// <returns></returns>
         public static Ed25519PublicKeyParameters GetPublicKeyFromPrivateKey(Ed25519PrivateKeyParameters privateKey)
         {
-
             // get the public key from the private key 
             Ed25519PublicKeyParameters publicKey = privateKey.GeneratePublicKey();
-
             return publicKey;
 
         }
-        
+
+
         /// <summary>
         /// Encodes private key to PEM formatted string
         /// </summary>
@@ -143,7 +148,15 @@ namespace Utils
         /// <returns></returns>
         public static string EncodePrivateKey(Ed25519PrivateKeyParameters privateKey)
         {
-            var serializedPublicBytes = privateKey.GetEncoded(); 
+            //TextWriter textWriter = new StringWriter();
+            //PemWriter pemWriter = new PemWriter(textWriter);
+            //pemWriter.WriteObject(new PemObjectGenerator());
+
+            // convert it to X509
+            //var keyPair = new AsymmetricCipherKeyPair(ed25519PublicKeyParam, privateKey);
+            //var publicKeyInfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(keyPair.Public);
+            //var serializedPublicBytes = publicKey.GetEncoded();
+            var serializedPublicBytes = privateKey.GetEncoded();
             var base64 = Convert.ToBase64String(serializedPublicBytes);
             base64 = string.Format("-----BEGIN ED25519 PRIVATE KEY-----\n{0}\n-----END ED25519 PRIVATE KEY-----\n", base64);
             return base64;
@@ -155,12 +168,21 @@ namespace Utils
         /// <param name="publicKey"></param>
         /// <returns></returns>
         public static string EncodePublicKey(Ed25519PublicKeyParameters publicKey)
-        { 
-            var serializedPublicBytes = publicKey.GetEncoded();
-            var base64 = Convert.ToBase64String(serializedPublicBytes);
+        {
+            // convert it to X509  
+            string base64 = Convert.ToBase64String(EncodePublicKeyX509(publicKey)) ;
             base64 = string.Format("-----BEGIN ED25519 PUBLIC KEY-----\n{0}\n-----END ED25519 PUBLIC KEY-----", base64);
             return base64;
         }
+
+        public static byte[] EncodePublicKeyX509(Ed25519PublicKeyParameters publicKey)
+        {
+            var publicKeyInfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(publicKey);
+            var serializedPublicBytes = publicKeyInfo.GetEncoded();
+
+            return serializedPublicBytes;
+        }
+
 
         /// <summary>
         /// Verify the singature usign the public key and the raw message

@@ -122,7 +122,8 @@ namespace Stratumn.Chainscript
 
                var privateKey = CryptoUtils.DecodeEd25519PrivateKey(key);
                 signedMessage = CryptoUtils.Sign(privateKey, toSign);
-               publicKey = CryptoUtils.GetPublicKeyFromPrivateKey(privateKey);
+                publicKey = CryptoUtils.GetPublicKeyFromPrivateKey(privateKey);
+                 
             }
             catch (Exception e)  
             {
@@ -133,7 +134,7 @@ namespace Stratumn.Chainscript
             {
                 Version = Constants.SIGNATURE_VERSION,
                 Signature_ = ByteString.CopyFrom(Encoding.UTF8.GetBytes(signedMessage)),
-                PublicKey = ByteString.CopyFrom(publicKey.GetEncoded()),
+                PublicKey = ByteString.CopyFrom(CryptoUtils.EncodePublicKeyX509(publicKey)),
             };
             return new Signature(sig);
         }

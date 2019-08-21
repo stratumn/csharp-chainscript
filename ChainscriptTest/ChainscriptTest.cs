@@ -13,9 +13,9 @@ namespace Stratumn.Chainscript.ChainscriptTest
     {
         static List<ITestCase> TestCases =
             new List<ITestCase>() { 
-                new SimpleSegmentTest(),
+               /* new SimpleSegmentTest(),
                 new ReferencesTest(),
-                new EvidencesTest(),
+                new EvidencesTest(),*/
                 new SignaturesTest()
             };
 
