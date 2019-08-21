@@ -23,15 +23,16 @@ namespace Stratumn.Chainscript.ChainscriptTest
         public void RunTests()
         {
             string dataFile = "./1.0.0_T.json";
-            Generate(dataFile);
-            Validate(dataFile);
+           Assert.IsTrue( Generate(dataFile ),"Generate failed");
+            Assert.IsTrue(Validate(dataFile), "Validate failed"); 
         }
 
 
-        private void Generate(String dataFile)
+        private Boolean Generate(String dataFile )
         {
             Console.WriteLine("Saving encoded segments to " + Path.GetFullPath(dataFile));
             List<TestCaseResult> results = new List<TestCaseResult>();
+            Boolean result = true;
             foreach (ITestCase tcase in TestCases)
             {
                 try
@@ -41,7 +42,7 @@ namespace Stratumn.Chainscript.ChainscriptTest
                 catch (Exception e)
                 {
                     Debug.WriteLine(tcase.GetId() + "  " + e.ToString());
-                    
+                    result &= false;
                     results.Add(new TestCaseResult(tcase.GetId(), e.Message));
                 }
             }
@@ -49,11 +50,11 @@ namespace Stratumn.Chainscript.ChainscriptTest
             String json = Newtonsoft.Json.JsonConvert.SerializeObject(results, Newtonsoft.Json.Formatting.Indented);
 
             File.WriteAllText(Path.GetFullPath(dataFile), json);
-
+            return result;
 
         }
 
-        private void Validate(String inputFile)
+        private Boolean Validate(String inputFile)
         {
             Console.WriteLine("Loading encoded segments from " + Path.GetFullPath(inputFile));
             if (!File.Exists(Path.GetFullPath(inputFile)))
@@ -61,38 +62,39 @@ namespace Stratumn.Chainscript.ChainscriptTest
                 throw new Exception("File not found " + Path.GetFullPath(inputFile));
             }
             String jsonData = File.ReadAllText(Path.GetFullPath(inputFile));
-
+            Boolean result = true;
             TestCaseResult[] resultArr = JsonConvert.DeserializeObject<TestCaseResult[]>(jsonData);
 
             ITestCase testCase;
-            foreach (TestCaseResult result in resultArr)
+            foreach (TestCaseResult testCaseResult in resultArr)
             {
-                if (result.Id.Equals(SimpleSegmentTest.Id, StringComparison.CurrentCultureIgnoreCase))
+                if (testCaseResult.Id.Equals(SimpleSegmentTest.Id, StringComparison.CurrentCultureIgnoreCase))
                     testCase = new SimpleSegmentTest();
-                //else if (result.Id .Equals (SignaturesTest.id,StringComparison.CurrentCultureIgnoreCase))
-                //   testCase = new SignaturesTest();
-                else if (result.Id.Equals(ReferencesTest.Id, StringComparison.CurrentCultureIgnoreCase))
+                 else if (testCaseResult.Id .Equals (SignaturesTest.Id,StringComparison.CurrentCultureIgnoreCase))
+                    testCase = new SignaturesTest();
+                else if (testCaseResult.Id.Equals(ReferencesTest.Id, StringComparison.CurrentCultureIgnoreCase))
                     testCase = new ReferencesTest();
-                else if (result.Id.Equals(EvidencesTest.Id, StringComparison.CurrentCultureIgnoreCase))
+                else if (testCaseResult.Id.Equals(EvidencesTest.Id, StringComparison.CurrentCultureIgnoreCase))
                     testCase = new EvidencesTest();
                 else
                 {
-                    Console.Error.WriteLine("Unknown test case : " + result.Id);
+                    Console.Error.WriteLine("Unknown test case : " + testCaseResult.Id);
                     continue;
                 }
 
                 try
                 {
-                    testCase.Validate(result.Data) ;
-                    Console.WriteLine(result.Id + " SUCCESS ");
+                    testCase.Validate(testCaseResult.Data) ;
+                    Console.WriteLine(testCaseResult.Id + " SUCCESS ");
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.ToString() );
-                    Console.Error.WriteLine(result.Id + " FAILED " + e.Message);
-
+                    Console.Error.WriteLine(testCaseResult.Id + " FAILED " + e.Message);
+                    result &= false;
                 }
             }
+            return result;
         }
 
 

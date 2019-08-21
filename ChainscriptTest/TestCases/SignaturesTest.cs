@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,13 +10,12 @@ namespace Stratumn.Chainscript.ChainscriptTest.TestCases
 {
     class SignaturesTest : ITestCase
     {
-        string publicKeyString = "-----BEGIN ED25519 PUBLIC KEY-----\nMCowBQYDK2VwAyEAEIwjKUueKwu2s+ie5aFAsYBn8OEL7GHjEPML3JgxOEs=\n-----END ED25519 PUBLIC KEY-----";
         string privateKeyString = "-----BEGIN ED25519 PRIVATE KEY-----\nMFACAQAwBwYDK2VwBQAEQgRAG4bBxUz5/UFzaCCxlhmpbKtZE313fsfY+hviGNRr\n5RYQjCMpS54rC7az6J7loUCxgGfw4QvsYeMQ8wvcmDE4Sw==\n-----END ED25519 PRIVATE KEY-----\n";
 
         public static readonly string Id = "segment-signatures";
         string ITestCase.Generate()
         {
-            Org.BouncyCastle.Crypto.Parameters.Ed25519PrivateKeyParameters privateKey = CryptoUtils.DecodeEd25519PrivateKey(privateKeyString);
+            Ed25519PrivateKeyParameters privateKey = CryptoUtils.DecodeEd25519PrivateKey(privateKeyString);
             Link link = new LinkBuilder("test_process", "test_map")
             .WithAction("ʙᴀᴛᴍᴀɴ").Build();
             link.Sign(privateKey.GetEncoded(), "");

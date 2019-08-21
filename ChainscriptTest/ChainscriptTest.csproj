@@ -57,6 +57,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CryptoUtilsTest.cs" />
     <Compile Include="TestCases\SignaturesTest.cs" />
     <Compile Include="TestCases\ReferencesTest.cs" />
     <Compile Include="TestCases\SimpleSegmentTest.cs" />
