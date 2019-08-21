@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainscriptTest", "ChainscriptTest\ChainscriptTest.csproj", "{16FDD1DA-F6BF-4BD5-AF19-83C52A5150DD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{37F464E3-81A2-47B1-803D-2A47A6C3AB48} = {37F464E3-81A2-47B1-803D-2A47A6C3AB48}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CanonicalJson", "..\canonicaljson-csharp\CanonicalJson\CanonicalJson.csproj", "{F2EC8A3F-A4EF-4675-985D-8DA3EF0D141B}"
 EndProject
