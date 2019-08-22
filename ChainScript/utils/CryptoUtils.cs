@@ -81,8 +81,7 @@ namespace Utils
         public static Ed25519PrivateKeyParameters DecodeEd25519PrivateKey(byte[] keyBytes)
         {
             Ed25519PrivateKeyParameters privateKey = new Ed25519PrivateKeyParameters(keyBytes, 0);
-            // var privateKey = (Ed25519PrivateKeyParameters)PrivateKeyFactory.CreateKey(keyBytes); 
-            return privateKey;
+              return privateKey;
         }
 
         /// <summary>
@@ -97,19 +96,19 @@ namespace Utils
             var pemObject = pemReader.ReadPemObject();
             var keyParameters = new Ed25519PublicKeyParameters(pemObject.Content, 0);
             var publicKey = DecodeEd25519PublicKey(pemObject.Content);
-            //pem = pem.Replace("\n", "").Replace("-----BEGIN ED25519 PUBLIC KEY-----", "")
-            //    .Replace("-----END ED25519 PUBLIC KEY-----", "");
-
-            //var privateKeyBase64 = Convert.FromBase64String(pem); 
-            // var publicKey = DecodeEd25519PublicKey(privateKeyBase64); 
+           
             return publicKey;
         }
 
+        /// <summary>
+        /// Decodes the public key from byte array
+        /// </summary>
+        /// <param name="keyBytes"></param>
+        /// <returns></returns>
         public static Ed25519PublicKeyParameters DecodeEd25519PublicKey(byte[] keyBytes)
         {
             var publicKey = (Ed25519PublicKeyParameters)PublicKeyFactory.CreateKey(keyBytes);
-            //Ed25519PublicKeyParameters publicKey = new Ed25519PublicKeyParameters(keyBytes, 0); 
-            return publicKey;
+             return publicKey;
         }
 
         /// <summary>
@@ -148,14 +147,7 @@ namespace Utils
         /// <returns></returns>
         public static string EncodePrivateKey(Ed25519PrivateKeyParameters privateKey)
         {
-            //TextWriter textWriter = new StringWriter();
-            //PemWriter pemWriter = new PemWriter(textWriter);
-            //pemWriter.WriteObject(new PemObjectGenerator());
-
-            // convert it to X509
-            //var keyPair = new AsymmetricCipherKeyPair(ed25519PublicKeyParam, privateKey);
-            //var publicKeyInfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(keyPair.Public);
-            //var serializedPublicBytes = publicKey.GetEncoded();
+          
             var serializedPublicBytes = privateKey.GetEncoded();
             var base64 = Convert.ToBase64String(serializedPublicBytes);
             base64 = string.Format("-----BEGIN ED25519 PRIVATE KEY-----\n{0}\n-----END ED25519 PRIVATE KEY-----\n", base64);
@@ -175,6 +167,11 @@ namespace Utils
             return base64;
         }
 
+        /// <summary>
+        /// Hashes the Public key with X509
+        /// </summary>
+        /// <param name="publicKey"></param>
+        /// <returns></returns>
         public static byte[] EncodePublicKeyX509(Ed25519PublicKeyParameters publicKey)
         {
             var publicKeyInfo = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(publicKey);
