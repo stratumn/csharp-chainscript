@@ -71,6 +71,7 @@
     <Compile Include="Error.cs" />
     <Compile Include="Evidence.cs" />
     <Compile Include="generated-sources\Chainscript.cs" />
+    <Compile Include="ILink.cs" />
     <Compile Include="ILinkBuilder.cs" />
     <Compile Include="Link.cs" />
     <Compile Include="LinkBuilder.cs" />
@@ -80,6 +81,8 @@
     <Compile Include="Segment.cs" />
     <Compile Include="Signature.cs" />
     <Compile Include="utils\CryptoUtils.cs" />
+    <Compile Include="utils\JsonHelper.cs" />
+    <Compile Include="utils\ProtoMessageConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

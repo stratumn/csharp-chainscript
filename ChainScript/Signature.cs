@@ -134,7 +134,7 @@ namespace Stratumn.Chainscript
             {
                 Version = Constants.SIGNATURE_VERSION,
                 Signature_ = ByteString.CopyFrom(Encoding.UTF8.GetBytes(signedMessage)),
-                PublicKey = ByteString.CopyFrom(CryptoUtils.EncodePublicKeyX509(publicKey)),
+                PublicKey = ByteString.CopyFrom(Encoding.UTF8.GetBytes(CryptoUtils.EncodePublicKey(publicKey))),
             };
             return new Signature(sig);
         }
