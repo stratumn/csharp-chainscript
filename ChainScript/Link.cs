@@ -1,8 +1,10 @@
 ﻿
 using DevLab.JmesPath;
 using Google.Protobuf;
+using Newtonsoft.Json;
 using Stratumn.CanonicalJson;
 using Stratumn.Chainscript;
+using Stratumn.Chainscript.utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,12 +21,12 @@ namespace Stratumn.Chainscript
     /// </summary>
     public class Link
     {
-        private Stratumn.Chainscript.Proto.Link link;
+        public Stratumn.Chainscript.Proto.Link ALink { get; set; }
 
         /// <param name="link"> </param>
         public Link(Stratumn.Chainscript.Proto.Link link)
         {
-            this.link = link;
+            this.ALink = link;
         }
 
         /// <summary>
@@ -54,7 +56,7 @@ namespace Stratumn.Chainscript
 
             };
 
-            this.link.Signatures.Add(sig);
+            this.ALink.Signatures.Add(sig);
         }
 
         /// <summary>
@@ -80,14 +82,14 @@ namespace Stratumn.Chainscript
 
             this.VerifyCompatibility();
 
-            if (this.link.Data == null || this.link.Data.IsEmpty)
+            if (this.ALink.Data == null || this.ALink.Data.IsEmpty)
             {
                 return null;
             }
             switch (this.Version())
             {
                 case Constants.LINK_VERSION_1_0_0:
-                    return Canonicalizer.Parse(this.link.Data.ToStringUtf8());
+                    return Canonicalizer.Parse(this.ALink.Data.ToStringUtf8());
                 default:
                     throw new ChainscriptException(Error.LinkVersionUnknown);
             }
@@ -107,7 +109,7 @@ namespace Stratumn.Chainscript
                     try
                     {
                         string canonicalData = Canonicalizer.Stringify(value);
-                        this.link.Data = ByteString.CopyFrom(Encoding.UTF8.GetBytes(canonicalData));
+                        this.ALink.Data = ByteString.CopyFrom(Encoding.UTF8.GetBytes(canonicalData));
                         return;
                     }
                     catch (Exception e)
@@ -116,7 +118,7 @@ namespace Stratumn.Chainscript
                     }
                 default:
                     throw new ChainscriptException(Error.LinkVersionUnknown);
-            } 
+            }
         }
 
         /// <summary>
@@ -130,7 +132,7 @@ namespace Stratumn.Chainscript
             {
                 case Constants.LINK_VERSION_1_0_0:
 
-                    byte[] linkBytes = this.link.ToByteArray();
+                    byte[] linkBytes = this.ALink.ToByteArray();
                     return CryptoUtils.Sha256(linkBytes);
                 default:
                     throw new ChainscriptException(Error.LinkVersionUnknown);
@@ -190,7 +192,7 @@ namespace Stratumn.Chainscript
                         LinkMeta.Data = ByteString.CopyFrom(Encoding.UTF8.GetBytes(canonicalData));
 
                         Proto.LinkMeta meta = LinkMeta;
-                        this.link.Meta = meta;
+                        this.ALink.Meta = meta;
                         return;
                     }
                     catch (Exception e)
@@ -287,7 +289,7 @@ namespace Stratumn.Chainscript
         {
             Stratumn.Chainscript.Proto.Segment segment = new Stratumn.Chainscript.Proto.Segment()
             {
-                Link = this.link
+                Link = this.ALink
             };
             return new Segment(segment);
         }
@@ -298,7 +300,7 @@ namespace Stratumn.Chainscript
         /// </summary>
         public virtual byte[] Serialize()
         {
-            return this.link.ToByteArray();
+            return this.ALink.ToByteArray();
         }
 
 
@@ -324,7 +326,7 @@ namespace Stratumn.Chainscript
                 PublicKey = ByteString.CopyFrom(signature.PublicKey()),
                 Signature_ = ByteString.CopyFrom(signature.ByteSignature())
             };
-            this.link.Signatures.Add(sig);
+            this.ALink.Signatures.Add(sig);
         }
 
         /// <summary>
@@ -332,10 +334,10 @@ namespace Stratumn.Chainscript
         /// </summary>
         public Signature[] Signatures()
         {
-            Signature[] signatures = new Signature[this.link.Signatures.Count];
-            for (int i = 0; i < this.link.Signatures.Count; i++)
+            Signature[] signatures = new Signature[this.ALink.Signatures.Count];
+            for (int i = 0; i < this.ALink.Signatures.Count; i++)
             {
-                Signature signature = new Signature(this.link.Signatures[i]);
+                Signature signature = new Signature(this.ALink.Signatures[i]);
                 signatures[i] = signature;
             }
             return signatures;
@@ -362,7 +364,7 @@ namespace Stratumn.Chainscript
                     try
                     {
 
-                        input = Google.Protobuf.JsonFormatter.ToDiagnosticString(this.link);
+                        input = Google.Protobuf.JsonFormatter.ToDiagnosticString(this.ALink);
                         var jmes = new JmesPath();
                         string result = jmes.Transform(input, payloadPath);
 
@@ -385,8 +387,6 @@ namespace Stratumn.Chainscript
         /// (Optional) A link can be interpreted as a step in a process. </summary>
         /// <exception cref="Exception"> 
         /// @returns the corresponding process step. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
-        //ORIGINAL LINE: public String step() throws Exception
         public virtual string Step()
         {
             return string.IsNullOrEmpty(LinkMeta.Step) ? "" : LinkMeta.Step;
@@ -410,7 +410,7 @@ namespace Stratumn.Chainscript
         /// <exception cref="ChainscriptException">  </exception>
         public void Validate()
         {
-            if (string.IsNullOrEmpty(this.link.Version))
+            if (string.IsNullOrEmpty(this.ALink.Version))
             {
                 throw new ChainscriptException(Error.LinkVersionMissing);
             }
@@ -453,7 +453,7 @@ namespace Stratumn.Chainscript
         /// </summary>
         public virtual string Version()
         {
-            return this.link.Version;
+            return this.ALink.Version;
         }
 
         /// <summary>
@@ -479,7 +479,7 @@ namespace Stratumn.Chainscript
         /// <returns> the link </returns>
         public virtual Stratumn.Chainscript.Proto.Link GetLink()
         {
-            return link;
+            return ALink;
         }
 
 
@@ -492,11 +492,11 @@ namespace Stratumn.Chainscript
         {
             get
             {
-                if (this.link.Meta == null)
+                if (this.ALink.Meta == null)
                 {
                     throw new ChainscriptException(Error.LinkMetaMissing);
                 }
-                return this.link.Meta;
+                return this.ALink.Meta;
             }
         }
 
@@ -517,6 +517,28 @@ namespace Stratumn.Chainscript
             }
         }
 
+        public String ToObject()
+        {
+            try
+            {
+                return JsonConvert.SerializeObject(this.ALink);
+            }
+            catch (Exception e)
+            {
+                throw new ChainscriptException(e);
+            }
+        }
+
+   
+        /// <summary>
+        ///*
+        /// Convert a   json object to a link. </summary>
+        /// <param name="jsonObject">
+        /// @return </param>
+        public static Link FromObject(string jsonObject)
+        {
+            return new Link(JsonHelper.FromJson<Stratumn.Chainscript.Proto.Link>(jsonObject));
+        }
 
 
     }
