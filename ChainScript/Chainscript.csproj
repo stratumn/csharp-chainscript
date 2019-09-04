@@ -42,20 +42,6 @@
     <Protobuf Include="proto\chainscript.proto" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="BouncyCastle.Crypto">
-      <HintPath>..\packages\BouncyCastle.1.8.5\lib\BouncyCastle.Crypto.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Google.Protobuf">
-      <HintPath>..\packages\Google.Protobuf.3.9.1\lib\net45\Google.Protobuf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="JmesPath.Net, Version=1.0.125.0, Culture=neutral, PublicKeyToken=b29d616b7f4faff0, processorArchitecture=MSIL">
-      <HintPath>..\packages\JmesPath.Net.1.0.125\lib\net45\JmesPath.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -86,7 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\canonicaljson-csharp\CanonicalJson\CanonicalJson.csproj">
@@ -98,16 +83,26 @@
     <Folder Include="generated-sources\Stratumn\" />
     <Folder Include="packages\" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle">
+      <Version>1.8.5</Version>
+    </PackageReference>
+    <PackageReference Include="Google.Protobuf">
+      <Version>3.9.1</Version>
+    </PackageReference>
+    <PackageReference Include="Google.Protobuf.Tools">
+      <Version>3.9.1</Version>
+    </PackageReference>
+    <PackageReference Include="JmesPath.Net">
+      <Version>1.0.125</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.2</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Google.Protobuf.Tools.3.9.1\build\Google.Protobuf.Tools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Google.Protobuf.Tools.3.9.1\build\Google.Protobuf.Tools.targets'))" />
-  </Target>
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
-  <Import Project="..\packages\Google.Protobuf.Tools.3.9.1\build\Google.Protobuf.Tools.targets" Condition="Exists('..\packages\Google.Protobuf.Tools.3.9.1\build\Google.Protobuf.Tools.targets')" />
 </Project>
