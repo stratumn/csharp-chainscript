@@ -91,7 +91,7 @@ namespace Stratumn.Chainscript
                      
                     try
                     {
-                        var publicKey = CryptoUtils.DecodeEd25519PublicKey(this.PublicKey());
+                        var publicKey = CryptoUtils.DecodeEd25519PublicKey(Encoding.UTF8.GetString(this.PublicKey()));
                         if (!CryptoUtils.Verify(publicKey, signed, Encoding.UTF8.GetString(this.ByteSignature())))
                         {
                             throw new ChainscriptException(Error.SignatureInvalid);
@@ -133,7 +133,7 @@ namespace Stratumn.Chainscript
             Stratumn.Chainscript.Proto.Signature sig = new Stratumn.Chainscript.Proto.Signature
             {
                 Version = Constants.SIGNATURE_VERSION,
-                Signature_ = ByteString.CopyFrom(Encoding.UTF8.GetBytes(signedMessage)),
+                Signature_ = ByteString.CopyFrom(Encoding.UTF8.GetBytes(signedMessage)), 
                 PublicKey = ByteString.CopyFrom(Encoding.UTF8.GetBytes(CryptoUtils.EncodePublicKey(publicKey))),
             };
             return new Signature(sig);
