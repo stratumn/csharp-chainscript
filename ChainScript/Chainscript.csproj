@@ -82,6 +82,7 @@
     <Compile Include="Signature.cs" />
     <Compile Include="utils\CryptoUtils.cs" />
     <Compile Include="utils\JsonHelper.cs" />
+    <Compile Include="utils\MemoryStreamJsonConverter.cs" />
     <Compile Include="utils\ProtoMessageConverter.cs" />
   </ItemGroup>
   <ItemGroup>
