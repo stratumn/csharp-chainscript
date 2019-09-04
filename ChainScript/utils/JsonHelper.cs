@@ -22,23 +22,33 @@ namespace Stratumn.Chainscript.utils
 
         public static T ObjectToObject<T>(object srcObj)
         {
-            string json = null;
-            if (srcObj is String)
+            T value;
+            if (srcObj == null)
+                value = default(T);
+            else 
+            if (typeof(T).IsAssignableFrom(srcObj.GetType()))
             {
-                json = srcObj.ToString();
+                value = (T)srcObj;
             }
             else
             {
-                json = ToJson(srcObj);
+                string json = null;
+                if (srcObj is String)
+                {
+                    json = srcObj.ToString();
+                }
+                else
+                {
+                    json = ToJson(srcObj);
+                }
+                value = FromJson<T>(json);
             }
-            var value = FromJson<T>(json);
-
             return value;
         }
 
         public static Dictionary<String, Object> ObjectToMap(Object srcObject)
         {
-            return (Dictionary<String, Object>)ObjectToObject<Dictionary<String,Object>>(srcObject);
+            return (Dictionary<String, Object>)ObjectToObject<Dictionary<String, Object>>(srcObject);
         }
 
 
