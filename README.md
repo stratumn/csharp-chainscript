@@ -1,12 +1,11 @@
-# csharp-chainscript
-Official C Sharp implementation of https://github.com/stratumn/chainscript. 
+# .Net Chainscript
 
-1- Build the application using visual studio and run the unit tests.  
-2- Compile the code and run the command prompt for test project executable as follows:
+Official .Net implementation of [ChainScript](https://github.com/stratumn/chainscript). This is the recommended way to use ChainScript in your .Net projects.
 
-To generate test data: 
-ChainscriptTest.exe generate filename.json
+## Installation 
 
-To validate test data generated in the previous step: 
-ChainscriptTest.exe validated filename.json
-  
+Use the nuget package manager console [nuget](https://www.nuget.org) to install chainscript.
+
+```bash
+Install-Package Stratumn.Chainscript
+```
