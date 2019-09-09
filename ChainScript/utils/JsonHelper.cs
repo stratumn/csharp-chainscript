@@ -62,11 +62,12 @@ namespace Stratumn.Chainscript.utils
         }
 
 
+
         public static string ToCanonicalJson(Object src)
         {
             string json = ToJson(src);
 
-            return Canonicalizer.Canonizalize(json);
+            return Canonicalizer.Canonicalize(json);
 
         }
     }

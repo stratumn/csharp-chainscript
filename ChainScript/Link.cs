@@ -368,7 +368,7 @@ namespace Stratumn.Chainscript
                         var jmes = new JmesPath();
                         string result = jmes.Transform(input, payloadPath);
 
-                        string canonicalResult = Canonicalizer.Canonizalize(result.ToString());
+                        string canonicalResult = Canonicalizer.Canonicalize(result.ToString());
                         byte[] payloadBytes = Encoding.UTF8.GetBytes(canonicalResult);
                         hashedResultBytes = CryptoUtils.Sha256(payloadBytes);
                     }
