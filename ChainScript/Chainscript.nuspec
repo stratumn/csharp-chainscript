@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Stratumn.Chainscript</id>
+    <version>0.0.7.0</version>
+    <title>Chainscript C#</title>
+    <authors>Stratumn</authors>
+    <owners>Stratumn</owners>
+    <licenseUrl>https://github.com/stratumn/csharp-chainscript/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/stratumn/csharp-chainscript</projectUrl>
+    <iconUrl>https://avatars2.githubusercontent.com/u/15095987</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Official C# implementation of https://github.com/stratumn/chainscript. </description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <tags>Stratumn Chainscript</tags>
+  </metadata>
+</package>

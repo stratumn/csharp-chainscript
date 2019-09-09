@@ -10,8 +10,6 @@
     <AssemblyName>ChainscriptTest</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
@@ -42,6 +40,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="Stratumn.CanonicalJson">
+      <HintPath>..\packages\Stratumn.CanonicalJson.0.0.2\lib\net461\Stratumn.CanonicalJson.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TestCases\SignaturesTest.cs" />
@@ -58,10 +59,6 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\canonicaljson-csharp\CanonicalJson\CanonicalJson.csproj">
-      <Project>{f2ec8a3f-a4ef-4675-985d-8da3ef0d141b}</Project>
-      <Name>CanonicalJson</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ChainScript\Chainscript.csproj">
       <Project>{37f464e3-81a2-47b1-803d-2a47a6c3ab48}</Project>
       <Name>Chainscript</Name>

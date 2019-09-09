@@ -47,3 +47,7 @@ packages/IKVM.OpenJDK.Text.7.2.4630.5/IKVM.OpenJDK.Text.7.2.4630.5.nupkg
 packages/IKVM.Runtime.7.2.4630.5/lib/IKVM.Runtime.dll
 packages/IKVM.Runtime.7.2.4630.5/.signature.p7s
 packages/IKVM.Runtime.7.2.4630.5/IKVM.Runtime.7.2.4630.5.nupkg
+
+*.nupkg
+.vs
+packages
