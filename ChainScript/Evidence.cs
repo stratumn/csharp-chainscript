@@ -145,9 +145,7 @@ namespace Stratumn.Chainscript
         /// <summary>
         /// Create an evidence from a protobuf object. </summary>
         /// <param name="e"> protobuf evidence. </param>
-        /// <exception cref="ChainscriptException">  </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
-        //ORIGINAL LINE: public static Evidence fromProto(stratumn.chainscript.Chainscript.Evidence object) throws ChainscriptException
+        /// <exception cref="ChainscriptException">  </exception>      
         public static Evidence FromProto(Stratumn.Chainscript.Proto.Evidence @object)
         {
 

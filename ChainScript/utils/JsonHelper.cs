@@ -12,22 +12,36 @@ namespace Stratumn.Chainscript.utils
 {
     public static class JsonHelper
     {
+
+        private static List<JsonConverter> ConverterList;
+        static JsonHelper(){
+
+            ConverterList = new List<JsonConverter> {new ProtoMessageConverter(),
+                 new MemoryStreamJsonConverter() };
+
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                Converters = ConverterList
+            };
+        }
+
+        /// <summary>
+        /// Adds a new Converter to the internal list of converters used by Json
+        /// </summary>
+        /// <param name="converter"></param>
+        public static void RegisterConverter(JsonConverter converter)
+        {
+            ConverterList.Add(converter);
+        }
+
         public static T FromJson<T>(String json)
         {
-            return JsonConvert.DeserializeObject<T>(json, new JsonConverter[] {
-            new ProtoMessageConverter(),
-            new MemoryStreamJsonConverter()
-            }
-            );
+            return JsonConvert.DeserializeObject<T>(json);
         }
 
         public static string ToJson(Object json)
         {
-            return JsonConvert.SerializeObject(json, new JsonConverter[] {
-                new ProtoMessageConverter(),
-            new MemoryStreamJsonConverter()
-            });
-
+            return JsonConvert.SerializeObject(json); 
         }
 
         public static T ObjectToObject<T>(object srcObj)
