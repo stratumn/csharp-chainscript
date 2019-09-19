@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Stratumn.Chainscript</id>
-    <version>0.0.7.0</version>
+    <version>0.0.10.0</version>
     <title>Chainscript C#</title>
     <authors>Stratumn</authors>
     <owners>Stratumn</owners>
@@ -14,5 +14,14 @@
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019</copyright>
     <tags>Stratumn Chainscript</tags>
+
+    <dependencies>
+        <dependency id="BouncyCastle" version="1.8.5" />
+        <dependency id="Google.Protobuf" version="3.9.1" />
+        <dependency id="Google.Protobuf.Tools" version="3.9.1" />
+        <dependency id="JmesPath.Net" version="1.0.125" />
+        <dependency id="Newtonsoft.Json" version="12.0.2" />
+        <dependency id="Stratumn.CanonicalJson" version="0.0.7" />
+    </dependencies>
   </metadata>
 </package>

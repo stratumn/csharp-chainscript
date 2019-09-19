@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Chainscript.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="generated-sources\Stratumn\" />
@@ -95,7 +96,7 @@
       <Version>12.0.2</Version>
     </PackageReference>
     <PackageReference Include="Stratumn.CanonicalJson">
-      <Version>0.0.6</Version>
+      <Version>0.0.7</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
