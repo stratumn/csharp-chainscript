@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System;
 
 namespace Stratumn.Chainscript.ChainscriptTest.TestCases
 {
@@ -21,7 +19,7 @@ namespace Stratumn.Chainscript.ChainscriptTest.TestCases
         ///  Validate encoded segment bytes.
         /// </summary>
         /// <param name="encodedSegment"></param>
-        void Validate(String encodedSegment);
+        bool Validate(String encodedSegment);
 
     }
 }

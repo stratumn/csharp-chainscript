@@ -1,9 +1,5 @@
-﻿using Newtonsoft.Json;
-using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Utils;
 
 namespace Stratumn.Chainscript.ChainscriptTest.TestCases
@@ -17,10 +13,9 @@ namespace Stratumn.Chainscript.ChainscriptTest.TestCases
         {
             Ed25519PrivateKeyParameters privateKey = CryptoUtils.DecodeEd25519PrivateKey(privateKeyString);
             Link link = new LinkBuilder("test_process", "test_map")
-            .WithAction("ʙᴀᴛᴍᴀɴ").Build();
+                .WithAction("ʙᴀᴛᴍᴀɴ").Build();
             link.Sign(privateKey.GetEncoded(), "");
             link.Sign(privateKey.GetEncoded(), "[version,meta.mapId]");
-            //      link.sign(rsaKey.getEncoded(), "[version,meta.mapId]");
 
             Segment segment = link.Segmentify();
 
@@ -32,7 +27,7 @@ namespace Stratumn.Chainscript.ChainscriptTest.TestCases
             return Id;
         }
 
-        void ITestCase.Validate(string encodedSegment)
+        bool ITestCase.Validate(string encodedSegment)
         {
             Segment Segment = Segment.Deserialize(Convert.FromBase64String(encodedSegment));
             Segment.Validate();
@@ -51,6 +46,8 @@ namespace Stratumn.Chainscript.ChainscriptTest.TestCases
             {
                 throw new Exception("Invalid second signature payload path: " + signatures[1].PayloadPath());
             }
+
+            return true;
         }
     }
 }

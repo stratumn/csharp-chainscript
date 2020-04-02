@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Stratumn.Chainscript.ChainscriptTest.TestCases
 {
@@ -27,7 +24,7 @@ namespace Stratumn.Chainscript.ChainscriptTest.TestCases
             return Id;
         }
 
-        void ITestCase.Validate(string encodedSegment)
+        bool ITestCase.Validate(string encodedSegment)
         {
             Segment Segment = Segment.Deserialize(Convert.FromBase64String(encodedSegment));
             Segment.Validate();
@@ -59,7 +56,8 @@ namespace Stratumn.Chainscript.ChainscriptTest.TestCases
             {
                 throw new Exception("Invalid second reference link hash: " + String.Join(",", linkRefs[1].LinkHash)); 
             }
-           
+
+            return true;
         }
     }
 }

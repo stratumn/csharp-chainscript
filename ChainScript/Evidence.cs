@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using Google.Protobuf;
 
 namespace Stratumn.Chainscript
 {
-
     /// <summary>
 	/// Evidences can be used to externally verify a link's existence at a given
 	/// moment in time.
@@ -98,7 +97,6 @@ namespace Stratumn.Chainscript
             }
         }
 
-
         /// <returns> the backend </returns>
         public string Backend
         {
@@ -111,7 +109,6 @@ namespace Stratumn.Chainscript
                 this.backend = value;
             }
         }
-
 
         /// <returns> the provider </returns>
         public string Provider
@@ -126,7 +123,6 @@ namespace Stratumn.Chainscript
             }
         }
 
-
         /// <returns> the proof </returns>
         public byte[] Proof
         {
@@ -139,8 +135,6 @@ namespace Stratumn.Chainscript
                 this.proof = value;
             }
         }
-
-
 
         /// <summary>
         /// Create an evidence from a protobuf object. </summary>
@@ -156,8 +150,6 @@ namespace Stratumn.Chainscript
 
             return new Evidence(version, backend, provider, proof);
         }
-
-
 
         /// <summary>
         /// Deserialize an evidence. </summary>
@@ -179,6 +171,4 @@ namespace Stratumn.Chainscript
         }
 
     }
-
 }
-

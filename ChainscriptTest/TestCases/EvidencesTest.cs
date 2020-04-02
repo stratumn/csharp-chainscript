@@ -1,13 +1,10 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Stratumn.Chainscript.ChainscriptTest.TestCases
 {
     class EvidencesTest : ITestCase
     {
-
         public static readonly string Id = "segment-evidences";
         string ITestCase.Generate()
         {
@@ -23,7 +20,7 @@ namespace Stratumn.Chainscript.ChainscriptTest.TestCases
             return Id;
         }
 
-        void ITestCase.Validate(string encodedSegment)
+        bool ITestCase.Validate(string encodedSegment)
         {
             Segment Segment = Segment.Deserialize(Convert.FromBase64String(encodedSegment));
             Segment.Validate();
@@ -55,6 +52,8 @@ namespace Stratumn.Chainscript.ChainscriptTest.TestCases
             {
                 throw new Exception("Invalid ethereum evidence:" + JsonConvert.SerializeObject(eth));
             }
+
+            return true;
         }
     }
 }
