@@ -38,7 +38,6 @@ namespace Utils
             return Convert.FromBase64String(s);
         }
 
-
         /// <summary>
         /// Signg the message and convert it ot base64
         /// </summary>
@@ -55,7 +54,6 @@ namespace Utils
             return CryptoUtils.EncodeSignature(signature);
         }
 
-
         /// <summary>
         /// Get the private key object from the raw key
         /// </summary>
@@ -70,8 +68,6 @@ namespace Utils
             var privateKey = DecodeEd25519PrivateKey(seed);
             return privateKey;
         }
-
-
 
         /// <summary>
         /// Get the private key object from the raw key
@@ -119,7 +115,6 @@ namespace Utils
             return keyPair;
         }
 
-
         /// <summary>
         /// Todo :Need to be enhanced to return the correct public key but not used for now
         /// </summary>
@@ -133,7 +128,6 @@ namespace Utils
             return publicKey;
 
         }
-
 
         /// <summary>
         /// Encodes private key to PEM formatted string
@@ -175,7 +169,6 @@ namespace Utils
             return serializedPublicBytes;
         }
 
-
         /// <summary>
         /// Verify the singature usign the public key and the raw message
         /// </summary>
@@ -192,10 +185,7 @@ namespace Utils
             signer.Init(false, key);
             signer.BlockUpdate(message, 0, message.Length);
             return signer.VerifySignature(sig);
-
         }
-   
-
 
         /// <summary>
         /// provides a SHA256 hash of the the inputbytes
@@ -208,6 +198,5 @@ namespace Utils
             sha256.DoFinal(hash, 0);
             return hash;
         }
-
     }
 }

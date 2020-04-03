@@ -1,4 +1,4 @@
-﻿namespace Stratumn.Chainscript
+namespace Stratumn.Chainscript
 {
     /// <summary>
     /// ILinkBuilder makes it easy to create links that adhere to the ChainScript spec.

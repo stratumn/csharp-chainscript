@@ -1,12 +1,7 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Stratumn.CanonicalJson;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Stratumn.Chainscript.utils
 {

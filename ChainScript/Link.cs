@@ -1,16 +1,14 @@
-﻿
+
 using DevLab.JmesPath;
 using Google.Protobuf;
 using Newtonsoft.Json;
 using Stratumn.CanonicalJson;
-using Stratumn.Chainscript;
 using Stratumn.Chainscript.utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Utils;
 
 namespace Stratumn.Chainscript
